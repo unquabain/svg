@@ -3,6 +3,7 @@ package svg
 import (
 	"encoding/xml"
 	"fmt"
+	"image/color"
 	"strings"
 
 	"golang.org/x/image/colornames"
@@ -97,13 +98,24 @@ func (ta *TransformAttr) SkewY(r float64) {
 
 type ColorAttr string
 
-func (ca ColorAttr) String() string {
-	rgba, ok := colornames.Map[string(ca)]
+func (ca *ColorAttr) FromColor(c color.Color) {
+	r, g, b, a := c.RGBA()
+	*ca = ColorAttr(fmt.Sprintf(`rgba(%d, %d, %d, %d)`, r/0x100, g/0x100, b/0x100, a/0x100))
+}
+
+func (ca *ColorAttr) FromNamedColor(name string) {
+	rgba, ok := colornames.Map[name]
 	if ok {
-		return fmt.Sprintf(`rgba(%d, %d, %d, %d)`, rgba.R, rgba.G, rgba.B, rgba.A)
+		ca.FromColor(rgba)
+		return
 	}
+	*ca = ColorAttr(name)
+}
+
+func (ca ColorAttr) String() string {
 	return string(ca)
 }
+
 func (ca ColorAttr) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 	if ca == `` {
 		return xml.Attr{}, nil
