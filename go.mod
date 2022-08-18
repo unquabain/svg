@@ -1,5 +1,5 @@
-module github.com/Unquabain/svglib
+module github.com/Unquabain/svg
 
 go 1.19
 
-require github.com/google/uuid v1.3.0
+require golang.org/x/image v0.0.0-20220722155232-062f8c9fd539

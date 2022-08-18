@@ -24,61 +24,61 @@ type PathAttr struct {
 	Commands []PathCommand
 }
 
-func (pa PathAttr) Move(dx, dy float64) {
+func (pa *PathAttr) Move(dx, dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'m', []float64{dx, dy}})
 }
-func (pa PathAttr) MoveTo(x, y float64) {
+func (pa *PathAttr) MoveTo(x, y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'M', []float64{x, y}})
 }
-func (pa PathAttr) Line(dx, dy float64) {
+func (pa *PathAttr) Line(dx, dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'l', []float64{dx, dy}})
 }
-func (pa PathAttr) LineTo(x, y float64) {
+func (pa *PathAttr) LineTo(x, y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'L', []float64{x, y}})
 }
-func (pa PathAttr) HLine(dx float64) {
+func (pa *PathAttr) HLine(dx float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'h', []float64{dx}})
 }
-func (pa PathAttr) HLineTo(x float64) {
+func (pa *PathAttr) HLineTo(x float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'H', []float64{x}})
 }
-func (pa PathAttr) VLine(dy float64) {
+func (pa *PathAttr) VLine(dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'v', []float64{dy}})
 }
-func (pa PathAttr) VLineTo(y float64) {
+func (pa *PathAttr) VLineTo(y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'V', []float64{y}})
 }
-func (pa PathAttr) Close() {
+func (pa *PathAttr) Close() {
 	pa.Commands = append(pa.Commands, PathCommand{'z', []float64{}})
 }
-func (pa PathAttr) Bezier(dx1, dy1, dx2, dy2, dx, dy float64) {
+func (pa *PathAttr) Bezier(dx1, dy1, dx2, dy2, dx, dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'c', []float64{dx1, dy1, dx2, dy2, dx, dy}})
 }
-func (pa PathAttr) BezierTo(x1, y1, x2, y2, x, y float64) {
+func (pa *PathAttr) BezierTo(x1, y1, x2, y2, x, y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'C', []float64{x1, y1, x2, y2, x, y}})
 }
-func (pa PathAttr) SmoothBezier(dx2, dy2, dx, dy float64) {
+func (pa *PathAttr) SmoothBezier(dx2, dy2, dx, dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'s', []float64{dx2, dy2, dx, dy}})
 }
-func (pa PathAttr) SmoothBezierTo(x2, y2, x, y float64) {
+func (pa *PathAttr) SmoothBezierTo(x2, y2, x, y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'S', []float64{x2, y2, x, y}})
 }
-func (pa PathAttr) Quadratic(dx1, dy1, dx, dy float64) {
+func (pa *PathAttr) Quadratic(dx1, dy1, dx, dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'q', []float64{dx1, dy1, dx, dy}})
 }
-func (pa PathAttr) QuadraticTo(x1, y1, x, y float64) {
+func (pa *PathAttr) QuadraticTo(x1, y1, x, y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'Q', []float64{x1, y1, x, y}})
 }
-func (pa PathAttr) SmoothQuadratic(dx, dy float64) {
+func (pa *PathAttr) SmoothQuadratic(dx, dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'t', []float64{dx, dy}})
 }
-func (pa PathAttr) SmoothQuadraticTo(x, y float64) {
+func (pa *PathAttr) SmoothQuadraticTo(x, y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'T', []float64{x, y}})
 }
-func (pa PathAttr) Arc(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, dx, dy float64) {
+func (pa *PathAttr) Arc(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, dx, dy float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'a', []float64{rx, ry, xAxisRotation, largeArcFlag, sweepFlag, dx, dy}})
 }
-func (pa PathAttr) ArcTo(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y float64) {
+func (pa *PathAttr) ArcTo(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y float64) {
 	pa.Commands = append(pa.Commands, PathCommand{'A', []float64{rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y}})
 }
 func (pa PathAttr) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
