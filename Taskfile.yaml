@@ -1,0 +1,38 @@
+version: "3"
+tasks:
+  boxclock:
+    sources:
+      - cmd/boxclock/boxclock.go
+      - cmd/boxclock/script.js
+      - cmd/boxclock/style.css
+      - cmd/boxclock/wasm_exec.js
+      - cmd/boxclock/generated/script.wasm
+    generates:
+      - boxclock
+    deps:
+      - boxclock_wasm
+    cmds:
+      - go build -o boxclock cmd/boxclock/boxclock.go
+  boxclock_wasm:
+    sources:
+      - cmd/boxclock/wasm/boxclock.go
+    generates:
+      - cmd/boxclock/generated/script.wasm
+    cmds:
+      - go generate cmd/boxclock/boxclock.go
+  bc_svg:
+    deps:
+      - boxclock
+    sources:
+      - boxclock
+    generates:
+      - bc.svg
+    cmds:
+      - ./boxclock > bc.svg
+  clean:
+    cmds:
+      - rm -f bc.svg
+      - rm -f boxclock
+      - rm -f cmd/boxclock/generated/script.wasm
+
+

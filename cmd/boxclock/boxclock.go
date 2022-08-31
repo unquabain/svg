@@ -4,15 +4,24 @@ import (
 	_ "embed"
 	"fmt"
 	"image/color"
+	"strings"
 
 	"github.com/Unquabain/svg"
 )
+
+//go:generate sh -c "GOOS=js GOARCH=wasm go build -o generated/script.wasm wasm/boxclock.go"
 
 //go:embed style.css
 var style string
 
 //go:embed script.js
 var script string
+
+//go:embed wasm_exec.js
+var wasmExec string
+
+//go:embed generated/script.wasm
+var wasm []byte
 
 var ColorLight = color.Gray{0xEE}
 var ColorDark = color.Gray{0x44}
@@ -70,7 +79,11 @@ func drawStyle() svg.Style {
 }
 
 func drawScript() svg.Script {
-	return svg.Script{Content: script}
+	sa := make([]string, len(wasm))
+	for i, b := range wasm {
+		sa[i] = fmt.Sprintf(`0x%X`, b)
+	}
+	return svg.Script{Content: fmt.Sprintf(script, strings.Join(sa, `,`))}
 }
 
 func main() {
@@ -81,6 +94,7 @@ func main() {
 	doc.Add(
 		drawStyle(),
 		drawBlocks(),
+		svg.Script{Content: wasmExec},
 		drawScript(),
 	)
 	writer, err := doc.WriterIndent(``, `  `)
