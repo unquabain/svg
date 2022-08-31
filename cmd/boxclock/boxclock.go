@@ -2,9 +2,9 @@ package main
 
 import (
 	_ "embed"
+	"encoding/base64"
 	"fmt"
 	"image/color"
-	"strings"
 
 	"github.com/Unquabain/svg"
 )
@@ -79,11 +79,8 @@ func drawStyle() svg.Style {
 }
 
 func drawScript() svg.Script {
-	sa := make([]string, len(wasm))
-	for i, b := range wasm {
-		sa[i] = fmt.Sprintf(`0x%X`, b)
-	}
-	return svg.Script{Content: fmt.Sprintf(script, strings.Join(sa, `,`))}
+	data := base64.StdEncoding.EncodeToString(wasm)
+	return svg.Script{Content: fmt.Sprintf(script, data)}
 }
 
 func main() {
